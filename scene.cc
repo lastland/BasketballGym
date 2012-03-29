@@ -42,16 +42,17 @@ SceneWidget::SceneWidget(QWidget *parent)
     : QGLWidget(parent)
 {
     setBasketball(12.3, 120, 80);
-    setBasketballPos(0.0, 0.0, 100.0);
-    setCameraPos(0.0, 0.0, 0.0);
-    setCameraCenter(0.0, 0.0, 5.0);
+    setBasketballPos(0.0, 11.30, 100.0);
+    setCameraPos(400.0, 400.0, -500.0);
+    setCameraCenter(250.0, 230.0, 5.0);
     setCameraUp(0.0, 1.0, 0.0);
-    setPerspective(60.0, 1.0, 0.1, 2000.0);
+    setPerspective(60.0, 1.0, 0.1, 9999.0);
 
-    setLightPos(0.0, 0.0, 0.0);
+    setLightPos(0.0, 0.0, -1.0);
     NUM4_TO_COLOR32(m_lightAmbient, 0.4, 0.4, 0.4, 1.0);
     NUM4_TO_COLOR32(m_lightDiffuse, 1.0, 1.0, 1.0, 1.0);
     NUM4_TO_COLOR32(m_ballAmbientAndDiffuse, 1.0, 0.3, 0.0, 1.0);
+    NUM4_TO_COLOR32(m_floorAmbientAndDiffuse, 1.0, 1.0, 1.0, 1.0);
 }
 
 void SceneWidget::setPerspective(GLdouble fovy, GLdouble aspect,
@@ -96,16 +97,17 @@ void SceneWidget::paintGL(void)
     GLfloat light_pos[] = P3D_TO_ARRAY4_WITH_ZERO(m_lightPos);
     GLfloat ambient_light[] = COLOR32_TO_ARRAY4(m_lightAmbient);
     GLfloat diffuse_light[] = COLOR32_TO_ARRAY4(m_lightDiffuse);
-    GLfloat mat_ambient_and_diffuse[] = COLOR32_TO_ARRAY4(m_ballAmbientAndDiffuse);
+    GLfloat ball_ambient_and_diffuse[] = COLOR32_TO_ARRAY4(m_ballAmbientAndDiffuse);
+    GLfloat floor_ambient_and_diffuse[] = COLOR32_TO_ARRAY4(m_floorAmbientAndDiffuse);
 
     glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient_and_diffuse);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, ball_ambient_and_diffuse);
     drawBasketballWhere(m_basketballPos.x, m_basketballPos.y, m_basketballPos.z);
     
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient_and_diffuse);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, floor_ambient_and_diffuse);
     drawGym();
 
     swapBuffers();
@@ -151,5 +153,9 @@ void SceneWidget::drawGym(void)
 
 void SceneWidget::drawFloor(void)
 {
-    /* blank now */
+    glPushMatrix();
+    glTranslatef(0, 0, 700);
+    glScalef(1500, 1, 1500);
+    glutSolidCube(1);
+    glPopMatrix();
 }

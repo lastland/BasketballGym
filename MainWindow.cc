@@ -50,6 +50,11 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
         ballLightGBox, &m_scene->m_ballAmbientAndDiffuse.G,
         ballLightBBox, &m_scene->m_ballAmbientAndDiffuse.B,
         ballLightABox, &m_scene->m_ballAmbientAndDiffuse.A,
+        /* floor color */
+        floorLightRBox, &m_scene->m_floorAmbientAndDiffuse.R,
+        floorLightGBox, &m_scene->m_floorAmbientAndDiffuse.G,
+        floorLightBBox, &m_scene->m_floorAmbientAndDiffuse.B,
+        floorLightABox, &m_scene->m_floorAmbientAndDiffuse.A,
         /* basketball position */
         ballPosXBox, &m_scene->m_basketballPos.x,
         ballPosYBox, &m_scene->m_basketballPos.y,

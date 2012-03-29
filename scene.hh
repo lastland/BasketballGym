@@ -41,6 +41,7 @@ public:
     glColor32 m_lightAmbient;
     glColor32 m_lightDiffuse;
     glColor32 m_ballAmbientAndDiffuse;
+    glColor32 m_floorAmbientAndDiffuse;
     void setLightPos(GLdouble x, GLdouble y, GLdouble z);
 
 private:
