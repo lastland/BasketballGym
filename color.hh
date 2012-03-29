@@ -1,6 +1,8 @@
 #ifndef _COLOR_H_
 #define _COLOR_H_
 
+#include "ext_datatype.hh"
+
 typedef struct _color32
 {
     double R;
@@ -11,10 +13,10 @@ typedef struct _color32
 
 typedef struct _gl_color32
 {
-    GLdouble R;
-    GLdouble G;
-    GLdouble B;
-    GLdouble A;
+    ExtGLdouble R;
+    ExtGLdouble G;
+    ExtGLdouble B;
+    ExtGLdouble A;
 } glColor32;
 
 #endif /* _COLOR_H_ */

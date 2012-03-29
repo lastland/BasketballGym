@@ -1,6 +1,8 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
+#include "ext_datatype.hh"
+
 typedef struct _vector3d
 {
     double x;
@@ -10,9 +12,9 @@ typedef struct _vector3d
 
 typedef struct _gl_vector3d
 {
-    GLdouble x;
-    GLdouble y;
-    GLdouble z;
+    ExtGLdouble x;
+    ExtGLdouble y;
+    ExtGLdouble z;
 } glP3d, glV3d, glS3d;
 
 #endif /* _VECTOR_H_ */
