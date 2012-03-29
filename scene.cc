@@ -35,20 +35,22 @@ SET_SOME_V3D(BasketballPos, m_basketballPos);
 SET_SOME_V3D(CameraPos, m_cameraPos);
 SET_SOME_V3D(CameraCenter, m_cameraCenter);
 SET_SOME_V3D(CameraUp, m_cameraUp);
+SET_SOME_V3D(LightPos, m_lightPos);
 
 SceneWidget::SceneWidget(QWidget *parent)
     : QGLWidget(parent)
 {
-    setBasketball(1.0, 120, 80);
-    setBasketballPos(0.0, 0.0, 5.0);
+    setBasketball(12.3, 120, 80);
+    setBasketballPos(0.0, 0.0, 100.0);
     setCameraPos(0.0, 0.0, 0.0);
     setCameraCenter(0.0, 0.0, 5.0);
     setCameraUp(0.0, 1.0, 0.0);
-    setPerspective(60.0, 1.0, 0.0, 10.0);
+    setPerspective(60.0, 1.0, 0.1, 2000.0);
 
-    NUM4_TO_COLOR32(m_lightAmbient, 0.2, 0.2, 0.2, 1.0);
+    setLightPos(0.0, 0.0, 0.0);
+    NUM4_TO_COLOR32(m_lightAmbient, 0.4, 0.4, 0.4, 1.0);
     NUM4_TO_COLOR32(m_lightDiffuse, 1.0, 1.0, 1.0, 1.0);
-    NUM4_TO_COLOR32(m_ballAmbientAndDiffuse, 1.0, 0.4, 0.0, 1.0);
+    NUM4_TO_COLOR32(m_ballAmbientAndDiffuse, 1.0, 0.3, 0.0, 1.0);
 }
 
 void SceneWidget::setPerspective(GLdouble fovy, GLdouble aspect,
@@ -81,23 +83,29 @@ void SceneWidget::paintGL(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-
     gluPerspective(m_fovy, m_aspect, m_near, m_far);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     gluLookAt(m_cameraPos.x, m_cameraPos.y, m_cameraPos.z,
               m_cameraCenter.x, m_cameraCenter.y, m_cameraCenter.z,
               m_cameraUp.x, m_cameraUp.y, m_cameraUp.z);
 
+    GLfloat light_pos[] = P3D_TO_ARRAY4_WITH_ZERO(m_lightPos);
     GLfloat ambient_light[] = COLOR32_TO_ARRAY4(m_lightAmbient);
     GLfloat diffuse_light[] = COLOR32_TO_ARRAY4(m_lightDiffuse);
     GLfloat mat_ambient_and_diffuse[] = COLOR32_TO_ARRAY4(m_ballAmbientAndDiffuse);
 
+    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
+
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient_and_diffuse);
-    
-    drawGym();
     drawBasketballWhere(m_basketballPos.x, m_basketballPos.y, m_basketballPos.z);
+    
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient_and_diffuse);
+    drawGym();
 
     swapBuffers();
 }
@@ -139,6 +147,11 @@ void SceneWidget::drawBasketballWhere(GLdouble x, GLdouble y, GLdouble z)
 }
 
 void SceneWidget::drawGym(void)
+{
+    drawFloor();
+}
+
+void SceneWidget::drawFloor(void)
 {
     /* blank now */
 }

@@ -37,14 +37,21 @@ public:
     void setPerspective(GLdouble fovy, GLdouble aspect,
                         GLdouble near, GLdouble far);
 
+    glP3d m_lightPos;
     glColor32 m_lightAmbient;
     glColor32 m_lightDiffuse;
     glColor32 m_ballAmbientAndDiffuse;
+    void setLightPos(GLdouble x, GLdouble y, GLdouble z);
 
 private:
-    void drawBasketball(void);
+
+    /* Used by paintGL. */
     void drawBasketballWhere(GLdouble x, GLdouble y, GLdouble z);
     void drawGym(void);
+
+    /* Used by above methods. */
+    void drawBasketball(void);
+    void drawFloor(void);
 };
 
 #endif /* _SCENE_H_ */
