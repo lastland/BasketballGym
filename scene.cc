@@ -44,11 +44,11 @@ SceneWidget::SceneWidget(QWidget *parent)
     setCameraPos(0.0, 0.0, 0.0);
     setCameraCenter(0.0, 0.0, 5.0);
     setCameraUp(0.0, 1.0, 0.0);
-    setPerspective(60.0, 1.0, 1.0, 10.0);
+    setPerspective(60.0, 1.0, 0.0, 10.0);
 
-    NUM4_TO_COLOR32(m_lightAmbient, 1.0, 1.0, 1.0, 1.0);
+    NUM4_TO_COLOR32(m_lightAmbient, 0.2, 0.2, 0.2, 1.0);
     NUM4_TO_COLOR32(m_lightDiffuse, 1.0, 1.0, 1.0, 1.0);
-    NUM4_TO_COLOR32(m_ballAmbientAndDiffuse, 1.0, 1.0, 1.0, 1.0);
+    NUM4_TO_COLOR32(m_ballAmbientAndDiffuse, 1.0, 0.4, 0.0, 1.0);
 }
 
 void SceneWidget::setPerspective(GLdouble fovy, GLdouble aspect,

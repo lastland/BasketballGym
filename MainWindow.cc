@@ -69,6 +69,19 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     connect(lightDiffuseABox, SIGNAL(valueChanged(double)),
             &m_scene->m_lightDiffuse.A, SLOT(setValue(double)));
 
+    ballLightRBox->setValue(m_scene->m_ballAmbientAndDiffuse.R);
+    ballLightGBox->setValue(m_scene->m_ballAmbientAndDiffuse.G);
+    ballLightBBox->setValue(m_scene->m_ballAmbientAndDiffuse.B);
+    ballLightABox->setValue(m_scene->m_ballAmbientAndDiffuse.A);
+    connect(ballLightRBox, SIGNAL(valueChanged(double)),
+            &m_scene->m_ballAmbientAndDiffuse.R, SLOT(setValue(double)));
+    connect(ballLightGBox, SIGNAL(valueChanged(double)),
+            &m_scene->m_ballAmbientAndDiffuse.G, SLOT(setValue(double)));
+    connect(ballLightBBox, SIGNAL(valueChanged(double)),
+            &m_scene->m_ballAmbientAndDiffuse.B, SLOT(setValue(double)));
+    connect(ballLightABox, SIGNAL(valueChanged(double)),
+            &m_scene->m_ballAmbientAndDiffuse.A, SLOT(setValue(double)));
+
     sphereRadiusBox->setValue(m_scene->m_basketballRadius);
     sphereSlicesBox->setValue(m_scene->m_basketballSlices);
     sphereStacksBox->setValue(m_scene->m_basketballStacks);
