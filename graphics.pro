@@ -10,6 +10,6 @@ LIBS += -lGLU
 QT += opengl
 
 # Input
-HEADERS += ext_datatype.hh color.hh scene.hh vector.hh MainWindow.hh
+HEADERS += ext_datatype.hh color.hh vector.hh qtglut.h scene.hh MainWindow.hh
 FORMS += MainWindow.ui
-SOURCES += ext_datatype.cc scene.cc main.cc MainWindow.cc
+SOURCES += ext_datatype.cc qtglut.cpp scene.cc MainWindow.cc main.cc

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <Qt/QtOpenGL>
 #include <GL/glu.h>
+#include "qtglut.h"
 #include "scene.hh"
 
 #define COLOR32_TO_ARRAY4(color) \
@@ -132,10 +133,7 @@ void SceneWidget::timerEvent(QTimerEvent *event)
 
 void SceneWidget::drawBasketball(void)
 {
-    GLUquadricObj *quadObj = gluNewQuadric();
-    gluQuadricDrawStyle(quadObj, GLU_FILL);
-    gluQuadricNormals(quadObj, GLU_SMOOTH);
-    gluSphere(quadObj, m_basketballRadius, m_basketballSlices, m_basketballStacks);
+    glutSolidSphere(m_basketballRadius, m_basketballSlices, m_basketballStacks);
 }
 
 void SceneWidget::drawBasketballWhere(GLdouble x, GLdouble y, GLdouble z)
