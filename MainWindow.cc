@@ -7,11 +7,15 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
 {
     setupUi(this);
     m_scene = scene;
-    scenePartLayout->addWidget(m_scene);
+    scenePartLayout->addWidget(m_scene, 0);
 
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), scene, SLOT(updateGL()));
     timer->start(1000.0 / 60.0);
+
+    m_play = false;
+    connect(playButton, SIGNAL(clicked()), m_scene, SLOT(toggleState()));
+    connect(playButton, SIGNAL(clicked()), this, SLOT(togglePlayButton()));
 
     QObject *double_buddies[] = {
         /* camera position */
@@ -92,5 +96,19 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
                 int_buddies[i+1], SLOT(setValue(int)));
         connect(int_buddies[i+1], SIGNAL(valueChanged(int)),
                 int_buddies[i], SLOT(setValue(int)));
+    }
+}
+
+void MainWindow::togglePlayButton()
+{
+    if (m_play)
+    {
+        m_play = false;
+        playButton->setText("Play");
+    }
+    else
+    {
+        m_play = true;
+        playButton->setText("Pause");
     }
 }

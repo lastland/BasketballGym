@@ -20,29 +20,70 @@
    <string>Gym</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="6,1">
+   <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="6,1">
     <item>
-     <layout class="QVBoxLayout" name="scenePartLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
+     <layout class="QVBoxLayout" name="playPartLayout" stretch="100,1">
       <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <layout class="QVBoxLayout" name="scenePartLayout">
+        <property name="spacing">
+         <number>0</number>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="playButtonsPartLayout">
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="playButton">
+          <property name="text">
+           <string>Play</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
+     <layout class="QVBoxLayout" name="panelPartLayout">
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="sizePolicy">
@@ -55,7 +96,7 @@
          <string/>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <property name="statusTip">

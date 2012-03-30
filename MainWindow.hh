@@ -11,8 +11,13 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 public:
     MainWindow(SceneWidget *scene, QWidget *parent = NULL);
 
+public slots:
+    void togglePlayButton(void);
+    
 private:
     SceneWidget *m_scene;
+
+    bool m_play;
 };
 
 #endif /* _MAINWINDOW_H_ */

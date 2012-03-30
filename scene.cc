@@ -53,7 +53,7 @@ SceneWidget::SceneWidget(QWidget *parent)
     setGravityA(0, -980, 0);
     setBasketball(12.3, 120, 80);
     setBasketballPos(0.0, 100.0, 100.0);
-    setBasketballVel(0.0, 0.0, 0.0);
+    setBasketballVel(0.0, 0.0, 1.0);
     setCameraPos(400.0, 400.0, -500.0);
     setCameraCenter(250.0, 230.0, 5.0);
     setCameraUp(0.0, 1.0, 0.0);
@@ -82,6 +82,18 @@ void SceneWidget::setBasketball(GLdouble radius, GLuint slices, GLuint stacks)
     m_basketballRadius = radius;
     m_basketballSlices = slices;
     m_basketballStacks = stacks;
+}
+
+void SceneWidget::setBoxRange(GLdouble minx, GLdouble maxx,
+                              GLdouble miny, GLdouble maxy,
+                              GLdouble minz, GLdouble maxz)
+{
+    m_boxRangeMin.x = minx;
+    m_boxRangeMin.y = miny;
+    m_boxRangeMin.z = minz;
+    m_boxRangeMax.x = maxx;
+    m_boxRangeMax.y = maxy;
+    m_boxRangeMax.z = maxz;
 }
 
 void SceneWidget::initializeGL(void)
@@ -167,22 +179,17 @@ void SceneWidget::drawGym(void)
 
 void SceneWidget::calcBallInNextFrame(void)
 {
-    if (m_state == STOP)
-    {
-        m_prev = QTime::currentTime();
-        m_state = PLAY;
-    }
-    else
+    if (m_state == PLAY)
     {
         m_now = QTime::currentTime();
         int msecs = m_prev.msecsTo(m_now);
 
         m_basketballVel += m_gravity_a * ((double)msecs / 1000.0) * m_playSpeed;
         m_basketballPos += m_basketballVel;
-        if (m_basketballPos.y < 0.0)
+        if (m_basketballPos.y < m_basketballRadius)
         {
-            m_basketballPos.y = - m_basketballPos.y;
-            m_basketballVel = - m_basketballVel;
+            m_basketballPos.y = m_basketballRadius * 2.0 - m_basketballPos.y;
+            m_basketballVel.y = - m_basketballVel.y;
         }
         
         m_prev = m_now;
@@ -196,4 +203,17 @@ void SceneWidget::drawFloor(void)
     glScalef(1500, 2, 1500);
     glutSolidCube(1);
     glPopMatrix();
+}
+
+void SceneWidget::toggleState(void)
+{
+    if (m_state == PLAY)
+    {
+        m_state = PAUSE;
+    }
+    else
+    {
+        m_prev = QTime::currentTime();
+        m_state = PLAY;
+    }
 }

@@ -60,6 +60,17 @@ public:
 
     ExtGLdouble m_playSpeed;
     void setPlaySpeed(double speed);
+
+    glP3d m_boxRangeMin;
+    glP3d m_boxRangeMax;
+    void setBoxRange(GLdouble minx, GLdouble maxx,
+                     GLdouble miny, GLdouble maxy,
+                     GLdouble minz, GLdouble maxz);
+
+public slots:
+
+    void toggleState(void);
+    
 private:
 
     /* Used by paintGL. */
