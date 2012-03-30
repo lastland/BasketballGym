@@ -76,6 +76,7 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     QObject *int_buddies[] = {
         sphereSlicesBox, &m_scene->m_basketballSlices,
         sphereStacksBox, &m_scene->m_basketballStacks,
+        NULL
     };
 
     for (int i = 0; double_buddies[i]; i += 2)
