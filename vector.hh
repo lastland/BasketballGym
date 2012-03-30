@@ -155,4 +155,6 @@ public:
     
 } glP3d, glV3d, glS3d;
 
+const _gl_vector3d operator * (double f, _gl_vector3d num);
+
 #endif /* _VECTOR_H_ */

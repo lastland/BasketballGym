@@ -12,4 +12,4 @@ QT += opengl
 # Input
 HEADERS += ext_datatype.hh color.hh vector.hh qtglut.h scene.hh MainWindow.hh
 FORMS += MainWindow.ui
-SOURCES += ext_datatype.cc qtglut.cpp scene.cc MainWindow.cc main.cc
+SOURCES += ext_datatype.cc vector.cc qtglut.cpp scene.cc MainWindow.cc main.cc

@@ -1,8 +1,21 @@
-#include <stdio.h>
+#include <cstdio>
+#include <cmath>
 #include <Qt/QtOpenGL>
 #include <GL/glu.h>
 #include "qtglut.h"
 #include "scene.hh"
+
+const double SIZEX = 1500;
+const double MINX = -750;
+const double MAXX = MINX + SIZEX;
+
+const double SIZEY = 1500;
+const double MINY = 0;
+const double MAXY = MINY + SIZEY;
+
+const double SIZEZ = 1500;
+const double MINZ = 0;
+const double MAXZ = MINZ + SIZEZ;
 
 #define COLOR32_TO_ARRAY4(color) \
     {color.R, color.G, color.B, color.A}
@@ -48,12 +61,16 @@ void SceneWidget::setPlaySpeed(double speed)
 SceneWidget::SceneWidget(QWidget *parent)
     : QGLWidget(parent)
 {
-    setPlaySpeed(0.01);
+    setPlaySpeed(1);
+    setBoxRange(MINX, MAXX, MINY, MAXY, MINZ, MAXZ);
     
     setGravityA(0, -980, 0);
     setBasketball(12.3, 120, 80);
     setBasketballPos(0.0, 100.0, 100.0);
-    setBasketballVel(0.0, 0.0, 1.0);
+    setBasketballVel(0.0, 0.0, 100.0);
+    m_airReduce = 0.95;
+    m_colReduce = 0.80;
+    
     setCameraPos(400.0, 400.0, -500.0);
     setCameraCenter(250.0, 230.0, 5.0);
     setCameraUp(0.0, 1.0, 0.0);
@@ -177,6 +194,27 @@ void SceneWidget::drawGym(void)
     drawFloor();
 }
 
+glV3d SceneWidget::col(double v, double g, double h, double m, double t)
+{
+    double s = h - m;
+    if ((v <= 0 && s <= 0) || (v >= 0 && s >= 0))
+        return glV3d(0, m, 0);
+    double t1;
+    if (g != 0)
+    {
+        t1 = ((v > 0 ? 1 : -1) * sqrt(v * v + (g > 0 ? 2.0 : -2.0) * g * s) - v) / g;
+    }
+    else
+    {
+        t1 = - s / v;
+    }
+    double v1 = v + g * t1;
+    double v2 = - v1;
+    double t2 = t - t1;
+    double v3 = v2 + g * t2;
+    return glV3d(v3, m + (v2 + v3) * t2 * 0.5, 0);
+}
+
 void SceneWidget::calcBallInNextFrame(void)
 {
     if (m_state == PLAY)
@@ -184,13 +222,53 @@ void SceneWidget::calcBallInNextFrame(void)
         m_now = QTime::currentTime();
         int msecs = m_prev.msecsTo(m_now);
 
-        m_basketballVel += m_gravity_a * ((double)msecs / 1000.0) * m_playSpeed;
-        m_basketballPos += m_basketballVel;
-        if (m_basketballPos.y < m_basketballRadius)
+        double t = (double)msecs / 1000.0 * m_playSpeed;
+        glV3d a = m_gravity_a;
+        glP3d p = m_basketballPos + m_basketballVel * t + a * t * t / 2.0;
+        glV3d r;
+        glV3d v = m_basketballVel + a * t;
+        
+        if (p.x < m_basketballRadius + m_boxRangeMin.x)
         {
-            m_basketballPos.y = m_basketballRadius * 2.0 - m_basketballPos.y;
-            m_basketballVel.y = - m_basketballVel.y;
+            r = col(m_basketballVel.x, a.x, m_basketballPos.x, m_boxRangeMin.x + m_basketballRadius, t);
+            v.x = r.x;
+            p.x = r.y;
         }
+        else if (p.x + m_basketballRadius > m_boxRangeMax.x)
+        {
+            r = col(m_basketballVel.x, a.x, m_basketballPos.x, m_boxRangeMax.x - m_basketballRadius, t);
+            v.x = r.x;
+            p.x = r.y;
+        }
+        
+        if (p.y < m_basketballRadius + m_boxRangeMin.y)
+        {
+            r = col(m_basketballVel.y, a.y, m_basketballPos.y, m_boxRangeMin.y + m_basketballRadius, t);
+            v.y = r.x;
+            p.y = r.y;
+        }
+        else if (p.y + m_basketballRadius > m_boxRangeMax.y)
+        {
+            r = col(m_basketballVel.y, a.y, m_basketballPos.y, m_boxRangeMax.y - m_basketballRadius, t);
+            v.y = r.x;
+            p.y = r.y;
+        }
+        
+        if (p.z < m_basketballRadius + m_boxRangeMin.z)
+        {
+            r = col(m_basketballVel.z, a.z, m_basketballPos.z, m_boxRangeMin.z + m_basketballRadius, t);
+            v.z = r.x;
+            p.z = r.y;
+        }
+        else if (p.z + m_basketballRadius > m_boxRangeMax.z)
+        {
+            r = col(m_basketballVel.z, a.z, m_basketballPos.z, m_boxRangeMax.z - m_basketballRadius, t);
+            v.z = r.x;
+            p.z = r.y;
+        }
+
+        m_basketballPos = p;
+        m_basketballVel = v;
         
         m_prev = m_now;
     }
@@ -199,8 +277,8 @@ void SceneWidget::calcBallInNextFrame(void)
 void SceneWidget::drawFloor(void)
 {
     glPushMatrix();
-    glTranslatef(0, -1, 700);
-    glScalef(1500, 2, 1500);
+    glTranslatef(MINX + SIZEX / 2, -1, MINZ + SIZEZ / 2);
+    glScalef(SIZEX, 2, SIZEZ);
     glutSolidCube(1);
     glPopMatrix();
 }

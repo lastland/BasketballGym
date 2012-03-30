@@ -58,6 +58,9 @@ public:
     glColor32 m_floorAmbientAndDiffuse;
     void setLightPos(GLdouble x, GLdouble y, GLdouble z);
 
+    double m_airReduce;
+    double m_colReduce;
+
     ExtGLdouble m_playSpeed;
     void setPlaySpeed(double speed);
 
@@ -81,6 +84,7 @@ private:
     void calcBallInNextFrame(void);
     void drawBasketball(void);
     void drawFloor(void);
+    glV3d col(double v, double g, double h, double m, double t);
 
     /* State. */
     SceneState m_state;
