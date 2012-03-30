@@ -58,6 +58,8 @@ public:
     glColor32 m_floorAmbientAndDiffuse;
     void setLightPos(GLdouble x, GLdouble y, GLdouble z);
 
+    ExtGLdouble m_playSpeed;
+    void setPlaySpeed(double speed);
 private:
 
     /* Used by paintGL. */

@@ -40,10 +40,17 @@ SET_SOME_V3D(CameraCenter, m_cameraCenter);
 SET_SOME_V3D(CameraUp, m_cameraUp);
 SET_SOME_V3D(LightPos, m_lightPos);
 
+void SceneWidget::setPlaySpeed(double speed)
+{
+    m_playSpeed = speed;
+}
+
 SceneWidget::SceneWidget(QWidget *parent)
     : QGLWidget(parent)
 {
-    setGravityA(0, -10, 0);
+    setPlaySpeed(0.01);
+    
+    setGravityA(0, -980, 0);
     setBasketball(12.3, 120, 80);
     setBasketballPos(0.0, 100.0, 100.0);
     setBasketballVel(0.0, 0.0, 0.0);
@@ -170,7 +177,7 @@ void SceneWidget::calcBallInNextFrame(void)
         m_now = QTime::currentTime();
         int msecs = m_prev.msecsTo(m_now);
 
-        m_basketballVel += m_gravity_a * ((double)msecs / 1000.0);
+        m_basketballVel += m_gravity_a * ((double)msecs / 1000.0) * m_playSpeed;
         m_basketballPos += m_basketballVel;
         if (m_basketballPos.y < 0.0)
         {
