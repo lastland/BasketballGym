@@ -1,9 +1,17 @@
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
+#include <QtCore/QTime>
 #include <QtOpenGL/QGLWidget>
 #include "vector.hh"
 #include "color.hh"
+
+enum SceneState {
+    STOP,
+    PLAY,
+    BACK,
+    PAUSE,
+};
 
 class SceneWidget : public QGLWidget
 {
@@ -15,6 +23,9 @@ public:
     void paintGL(void);
     void timerEvent(QTimerEvent *event);
 
+    glV3d m_gravity_a;
+    void setGravityA(GLdouble x, GLdouble y, GLdouble z);
+
     ExtGLdouble m_basketballRadius;
     ExtGLuint m_basketballSlices;
     ExtGLuint m_basketballStacks;
@@ -22,6 +33,9 @@ public:
 
     glP3d m_basketballPos;
     void setBasketballPos(GLdouble x, GLdouble y, GLdouble z);
+
+    glV3d m_basketballVel;
+    void setBasketballVel(GLdouble x, GLdouble y, GLdouble z);
 
     glP3d m_cameraPos;
     glP3d m_cameraCenter;
@@ -51,8 +65,16 @@ private:
     void drawGym(void);
 
     /* Used by above methods. */
+    void calcBallInNextFrame(void);
     void drawBasketball(void);
     void drawFloor(void);
+
+    /* State. */
+    SceneState m_state;
+
+    /* Time. */
+    QTime m_prev;
+    QTime m_now;
 };
 
 #endif /* _SCENE_H_ */

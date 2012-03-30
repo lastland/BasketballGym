@@ -32,7 +32,9 @@ static inline void setV3d(glV3d *v, GLdouble x, GLdouble y, GLdouble z)
     v->z = z;
 }
 
+SET_SOME_V3D(GravityA, m_gravity_a);
 SET_SOME_V3D(BasketballPos, m_basketballPos);
+SET_SOME_V3D(BasketballVel, m_basketballVel);
 SET_SOME_V3D(CameraPos, m_cameraPos);
 SET_SOME_V3D(CameraCenter, m_cameraCenter);
 SET_SOME_V3D(CameraUp, m_cameraUp);
@@ -41,8 +43,10 @@ SET_SOME_V3D(LightPos, m_lightPos);
 SceneWidget::SceneWidget(QWidget *parent)
     : QGLWidget(parent)
 {
+    setGravityA(0, -10, 0);
     setBasketball(12.3, 120, 80);
-    setBasketballPos(0.0, 11.30, 100.0);
+    setBasketballPos(0.0, 100.0, 100.0);
+    setBasketballVel(0.0, 0.0, 0.0);
     setCameraPos(400.0, 400.0, -500.0);
     setCameraCenter(250.0, 230.0, 5.0);
     setCameraUp(0.0, 1.0, 0.0);
@@ -53,6 +57,8 @@ SceneWidget::SceneWidget(QWidget *parent)
     NUM4_TO_COLOR32(m_lightDiffuse, 1.0, 1.0, 1.0, 1.0);
     NUM4_TO_COLOR32(m_ballAmbientAndDiffuse, 1.0, 0.3, 0.0, 1.0);
     NUM4_TO_COLOR32(m_floorAmbientAndDiffuse, 1.0, 1.0, 1.0, 1.0);
+
+    m_state = STOP;
 }
 
 void SceneWidget::setPerspective(GLdouble fovy, GLdouble aspect,
@@ -104,6 +110,7 @@ void SceneWidget::paintGL(void)
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
 
+    calcBallInNextFrame();
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, ball_ambient_and_diffuse);
     drawBasketballWhere(m_basketballPos.x, m_basketballPos.y, m_basketballPos.z);
     
@@ -151,11 +158,35 @@ void SceneWidget::drawGym(void)
     drawFloor();
 }
 
+void SceneWidget::calcBallInNextFrame(void)
+{
+    if (m_state == STOP)
+    {
+        m_prev = QTime::currentTime();
+        m_state = PLAY;
+    }
+    else
+    {
+        m_now = QTime::currentTime();
+        int msecs = m_prev.msecsTo(m_now);
+
+        m_basketballVel += m_gravity_a * ((double)msecs / 1000.0);
+        m_basketballPos += m_basketballVel;
+        if (m_basketballPos.y < 0.0)
+        {
+            m_basketballPos.y = - m_basketballPos.y;
+            m_basketballVel = - m_basketballVel;
+        }
+        
+        m_prev = m_now;
+    }
+}
+
 void SceneWidget::drawFloor(void)
 {
     glPushMatrix();
-    glTranslatef(0, 0, 700);
-    glScalef(1500, 1, 1500);
+    glTranslatef(0, -1, 700);
+    glScalef(1500, 2, 1500);
     glutSolidCube(1);
     glPopMatrix();
 }

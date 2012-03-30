@@ -11,7 +11,7 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
 
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), scene, SLOT(updateGL()));
-    timer->start(50);
+    timer->start(1000.0 / 60.0);
 
     QObject *double_buddies[] = {
         /* camera position */
@@ -59,6 +59,10 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
         ballPosXBox, &m_scene->m_basketballPos.x,
         ballPosYBox, &m_scene->m_basketballPos.y,
         ballPosZBox, &m_scene->m_basketballPos.z,
+        /* basketball velocity */
+        ballVelXBox, &m_scene->m_basketballVel.x,
+        ballVelYBox, &m_scene->m_basketballVel.y,
+        ballVelZBox, &m_scene->m_basketballVel.z,
         /* baksetball radius */
         sphereRadiusBox, &m_scene->m_basketballRadius,
         /* end flag */
@@ -76,6 +80,8 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
             ((ExtGLdouble*)double_buddies[i+1])->value());
         connect(double_buddies[i], SIGNAL(valueChanged(double)),
                 double_buddies[i+1], SLOT(setValue(double)));
+        connect(double_buddies[i+1], SIGNAL(valueChanged(double)),
+                double_buddies[i], SLOT(setValue(double)));
     }
 
     for (int i = 0; int_buddies[i]; i += 2)
@@ -84,5 +90,7 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
             ((ExtGLuint*)int_buddies[i+1])->value());
         connect(int_buddies[i], SIGNAL(valueChanged(int)),
                 int_buddies[i+1], SLOT(setValue(int)));
+        connect(int_buddies[i+1], SIGNAL(valueChanged(int)),
+                int_buddies[i], SLOT(setValue(int)));
     }
 }
