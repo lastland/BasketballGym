@@ -69,6 +69,9 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
         ballVelZBox, &m_scene->m_basketballVel.z,
         /* baksetball radius */
         sphereRadiusBox, &m_scene->m_basketballRadius,
+        /* physics reduces */
+        airReduceBox, &m_scene->m_airReduce,
+        colReduceBox, &m_scene->m_colReduce,
         /* end flag */
         NULL
     };

@@ -68,8 +68,8 @@ SceneWidget::SceneWidget(QWidget *parent)
     setBasketball(12.3, 120, 80);
     setBasketballPos(0.0, 100.0, 100.0);
     setBasketballVel(0.0, 0.0, 100.0);
-    m_airReduce = 0.95;
-    m_colReduce = 0.80;
+    m_airReduce = 0.05;
+    m_colReduce = 0.10;
     
     setCameraPos(400.0, 400.0, -500.0);
     setCameraCenter(250.0, 230.0, 5.0);
@@ -209,7 +209,7 @@ glV3d SceneWidget::col(double v, double g, double h, double m, double t)
         t1 = - s / v;
     }
     double v1 = v + g * t1;
-    double v2 = - v1;
+    double v2 = - (1.0 - m_colReduce) * v1;
     double t2 = t - t1;
     double v3 = v2 + g * t2;
     return glV3d(v3, m + (v2 + v3) * t2 * 0.5, 0);
@@ -268,7 +268,7 @@ void SceneWidget::calcBallInNextFrame(void)
         }
 
         m_basketballPos = p;
-        m_basketballVel = v;
+        m_basketballVel = v * (1 - m_airReduce * t);
         
         m_prev = m_now;
     }
