@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "sound.hh"
 #include "scene.hh"
 #include "MainWindow.hh"
 
@@ -12,6 +13,10 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), scene, SLOT(updateGL()));
     timer->start(1000.0 / 60.0);
+
+    Sound *sound = new Sound();
+    connect(m_scene, SIGNAL(basketballCol(SoundLevel)),
+            sound, SLOT(basketballSound(SoundLevel)));
 
     m_play = false;
     connect(playButton, SIGNAL(clicked()), m_scene, SLOT(toggleState()));

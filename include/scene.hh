@@ -5,6 +5,7 @@
 #include <QtOpenGL/QGLWidget>
 #include "vector.hh"
 #include "color.hh"
+#include "sound.hh"
 
 enum SceneState {
     STOP,
@@ -70,6 +71,9 @@ public:
                      GLdouble miny, GLdouble maxy,
                      GLdouble minz, GLdouble maxz);
 
+signals:
+    void basketballCol(SoundLevel);
+                                                  
 public slots:
 
     void toggleState(void);

@@ -212,6 +212,16 @@ glV3d SceneWidget::col(double v, double g, double h, double m, double t)
     double v2 = - (1.0 - m_colReduce) * v1;
     double t2 = t - t1;
     double v3 = v2 + g * t2;
+    if (abs(v1) > 400)
+        emit basketballCol(HERE);
+    else if (abs(v1) > 300)
+        emit basketballCol(NEAR);
+    else if (abs(v1) > 200)
+        emit basketballCol(MIDDLE);
+    else if (abs(v1) > 100)
+        emit basketballCol(FAR);
+    else
+        emit basketballCol(VERYFAR);
     return glV3d(v3, m + (v2 + v3) * t2 * 0.5, 0);
 }
 
