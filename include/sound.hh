@@ -7,11 +7,11 @@
 #include "soundobject.hh"
 
 typedef enum _sound_level {
-    HERE,
-    NEAR,
-    MIDDLE,
-    FAR,
-    VERYFAR,
+    S_HERE,
+    S_NEAR,
+    S_MIDDLE,
+    S_FAR,
+    S_VERYFAR,
     SOUNDLEVEL_CNT
 } SoundLevel;
 

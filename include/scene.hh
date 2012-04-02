@@ -11,7 +11,7 @@ enum SceneState {
     STOP,
     PLAY,
     BACK,
-    PAUSE,
+    PAUSE
 };
 
 class SceneWidget : public QGLWidget
@@ -22,7 +22,9 @@ public:
     void initializeGL(void);
     void resizeGL(int w, int h);
     void paintGL(void);
-    void timerEvent(QTimerEvent *event);
+    void glDraw(void);
+    void paintEvent(QPaintEvent *);
+    void timerEvent(QTimerEvent *);
 
     glV3d m_gravity_a;
     void setGravityA(GLdouble x, GLdouble y, GLdouble z);
@@ -50,7 +52,7 @@ public:
     ExtGLdouble m_near;
     ExtGLdouble m_far;
     void setPerspective(GLdouble fovy, GLdouble aspect,
-                        GLdouble near, GLdouble far);
+                        GLdouble anear, GLdouble afar);
 
     glP3d m_lightPos;
     glColor32 m_lightAmbient;

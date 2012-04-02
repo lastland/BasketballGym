@@ -86,12 +86,12 @@ SceneWidget::SceneWidget(QWidget *parent)
 }
 
 void SceneWidget::setPerspective(GLdouble fovy, GLdouble aspect,
-                                 GLdouble near, GLdouble far)
+                                 GLdouble anear, GLdouble afar)
 {
     m_fovy = fovy;
     m_aspect = aspect;
-    m_near = near;
-    m_far = far;
+    m_near = anear;
+    m_far = afar;
 }
 
 void SceneWidget::setBasketball(GLdouble radius, GLuint slices, GLuint stacks)
@@ -169,6 +169,17 @@ void SceneWidget::resizeGL(int w, int h)
                 1.5 * (GLfloat)w / (GLfloat)h, -1.5, 1.5, -10.0, 10.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    m_aspect = (GLfloat)w / (GLfloat)h;
+}
+
+void SceneWidget::glDraw() {
+    makeCurrent();
+    paintGL();
+}
+
+void SceneWidget::paintEvent(QPaintEvent *event)
+{
+    updateGL();
 }
 
 void SceneWidget::timerEvent(QTimerEvent *event)
@@ -213,15 +224,15 @@ glV3d SceneWidget::col(double v, double g, double h, double m, double t)
     double t2 = t - t1;
     double v3 = v2 + g * t2;
     if (abs(v1) > 400)
-        emit basketballCol(HERE);
+        emit basketballCol(S_HERE);
     else if (abs(v1) > 300)
-        emit basketballCol(NEAR);
+        emit basketballCol(S_NEAR);
     else if (abs(v1) > 200)
-        emit basketballCol(MIDDLE);
+        emit basketballCol(S_MIDDLE);
     else if (abs(v1) > 100)
-        emit basketballCol(FAR);
+        emit basketballCol(S_FAR);
     else
-        emit basketballCol(VERYFAR);
+        emit basketballCol(S_VERYFAR);
     return glV3d(v3, m + (v2 + v3) * t2 * 0.5, 0);
 }
 

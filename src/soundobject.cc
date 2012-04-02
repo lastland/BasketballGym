@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QtCore/QCoreApplication>
 #include <QtGui/QSound>
 #include "soundobject.hh"

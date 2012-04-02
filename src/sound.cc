@@ -8,11 +8,11 @@ using namespace std;
 Sound::Sound()
     : QObject()
 {
-    char srcs[][256] = {SOUNDS_LOCATION "basketball_here.mp3",
-                        SOUNDS_LOCATION "basketball_near.mp3",
-                        SOUNDS_LOCATION "basketball_middle.mp3",
-                        SOUNDS_LOCATION "basketball_far.mp3",
-                        SOUNDS_LOCATION "basketball_veryfar.mp3"};
+    char srcs[][256] = {SOUNDS_LOCATION "basketball_here.wav",
+                        SOUNDS_LOCATION "basketball_near.wav",
+                        SOUNDS_LOCATION "basketball_middle.wav",
+                        SOUNDS_LOCATION "basketball_far.wav",
+                        SOUNDS_LOCATION "basketball_veryfar.wav"};
     for (int i = 0; i < SOUNDLEVEL_CNT; i++)
     {
         m_basketballSound[i] = new SoundObject(srcs[i]);

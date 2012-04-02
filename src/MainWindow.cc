@@ -11,7 +11,7 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     scenePartLayout->addWidget(m_scene, 0);
 
     QTimer *timer = new QTimer();
-    connect(timer, SIGNAL(timeout()), scene, SLOT(updateGL()));
+    connect(timer, SIGNAL(timeout()), scene, SLOT(update()));
     timer->start(1000.0 / 60.0);
 
     Sound *sound = new Sound();
