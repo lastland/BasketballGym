@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file alias="background.jpg">resources/images/background.jpg</file>
+  <file alias="basketball_here.wav">resources/sounds/basketball_here.wav</file>
+  <file alias="basketball_near.wav">resources/sounds/basketball_near.wav</file>
+  <file alias="basketball_middle.wav">resources/sounds/basketball_middle.wav</file>
+  <file alias="basketball_far.wav">resources/sounds/basketball_far.wav</file>
+  <file alias="basketball_veryfar.wav">resources/sounds/basketball_veryfar.wav</file>
+</qresource>
+</RCC>
