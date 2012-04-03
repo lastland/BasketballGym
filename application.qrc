@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file alias="background.jpg">resources/images/background.jpg</file>
+</qresource>
+</RCC>

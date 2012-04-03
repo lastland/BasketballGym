@@ -1,4 +1,13 @@
-#include <stdio.h>
+#include <QtGui/QCDEStyle>
+#include <QtGui/QMotifStyle>
+#include <QtGui/QWindowsVistaStyle>
+#include <QtGui/QWindowsXPStyle>
+#include <QtGui/QWindowsStyle>
+#include <QtGui/QMacStyle>
+#include <QtGui/QPlastiqueStyle>
+#include <QtGui/QGtkStyle>
+#include <QtGui/QCleanlooksStyle>
+#include <QtGui/QStyle>
 #include "sound.hh"
 #include "scene.hh"
 #include "MainWindow.hh"
@@ -10,6 +19,17 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     m_scene = scene;
     scenePartLayout->addWidget(m_scene, 0);
 
+    /* set background pictures. */
+    setObjectName("mainWindow");
+    setStyleSheet(
+        "#mainWindow{"
+        "background-image:url(:/background.jpg);"
+        "background-color:white;"
+        "background-position: bottom right;"
+        "background-repeat: none;"
+        "margin-right: 30px;"
+        "margin-bottom: 20px;}");
+
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), scene, SLOT(update()));
     timer->start(1000.0 / 60.0);
@@ -19,8 +39,65 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
             sound, SLOT(basketballSound(SoundLevel)));
 
     m_play = false;
+    playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     connect(playButton, SIGNAL(clicked()), m_scene, SLOT(toggleState()));
     connect(playButton, SIGNAL(clicked()), this, SLOT(togglePlayButton()));
+
+#ifdef __linux__
+    actionGtk->setEnabled(true);
+#else
+    actionGtk->setEnabled(false);
+#endif
+
+#ifdef __APPLE__
+    actionMac->setEnabled(true);
+#else
+    actionMac->setEnabled(false);
+#endif
+
+#ifdef _WIN32
+    actionWindowsVista->setEnabled(true);
+    actionWindowsXP->setEnabled(true);
+#else
+    actionWindowsVista->setEnabled(false);
+    actionWindowsXP->setEnabled(false);
+#endif
+
+    connect(actionEditorBar, SIGNAL(toggled(bool)), tabWidget, SLOT(setVisible(bool)));
+    
+    connect(actionPlastique, SIGNAL(triggered()), this, SLOT(stylePlastique()));
+    connect(actionGtk, SIGNAL(triggered()), this, SLOT(styleGtk()));
+    connect(actionCleanlooks, SIGNAL(triggered()), this, SLOT(styleCleanlooks()));
+    connect(actionWindows, SIGNAL(triggered()), this, SLOT(styleWindows()));
+    connect(actionWindowsVista, SIGNAL(triggered()), this, SLOT(styleWindowsVista()));
+    connect(actionWindowsXP, SIGNAL(triggered()), this, SLOT(styleWindowsXP()));
+    connect(actionMac, SIGNAL(triggered()), this, SLOT(styleMac()));
+    connect(actionMotif, SIGNAL(triggered()), this, SLOT(styleMotif()));
+    connect(actionCDE, SIGNAL(triggered()), this, SLOT(styleCDE()));
+
+    connect(actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    QPushButton *color_buttons[] = {
+        ambientColorButton,
+        diffuseColorButton,
+        ballColorButton,
+        floorColorButton,
+        NULL
+    };
+    QObject *colors[] = {
+        &m_scene->m_lightAmbient,
+        &m_scene->m_lightDiffuse,
+        &m_scene->m_ballAmbientAndDiffuse,
+        &m_scene->m_floorAmbientAndDiffuse,
+        NULL
+    };
+
+    for (int i = 0; color_buttons[i]; i++)
+    {
+        color_buttons[i]->setIcon(style()->standardIcon(
+                                      QStyle::SP_ToolBarHorizontalExtensionButton));
+        connect(color_buttons[i], SIGNAL(clicked()), colors[i], SLOT(getColor()));
+    }
 
     QObject *double_buddies[] = {
         /* camera position */
@@ -113,11 +190,66 @@ void MainWindow::togglePlayButton()
     if (m_play)
     {
         m_play = false;
-        playButton->setText("Play");
+        playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        playButton->setText(tr("Play"));
     }
     else
     {
         m_play = true;
-        playButton->setText("Pause");
+        playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        playButton->setText(tr("Pause"));
     }
+}
+
+void MainWindow::stylePlastique()
+{
+    QApplication::setStyle(new QPlastiqueStyle);
+}
+
+void MainWindow::styleGtk()
+{
+#ifdef __linux__
+    QApplication::setStyle(new QGtkStyle);
+#endif
+}
+
+void MainWindow::styleCleanlooks()
+{
+    QApplication::setStyle(new QCleanlooksStyle);
+}
+
+void MainWindow::styleWindowsVista()
+{
+#ifdef _WIN32
+    QApplication::setStyle(new QWindowsVistaStyle);
+#endif
+}
+
+void MainWindow::styleWindowsXP()
+{
+#ifdef _WIN32
+    QApplication::setStyle(new QWindowsXPStyle);
+#endif
+}
+
+void MainWindow::styleWindows()
+{
+    QApplication::setStyle(new QWindowsStyle);
+}
+
+void MainWindow::styleMac()
+{
+#ifdef __APPLE__
+    QApplication::setStyle(new QMacStyle);
+#endif
+}
+
+void MainWindow::styleMotif()
+{
+    QApplication::setStyle(new QMotifStyle);
+}
+
+void MainWindow::styleCDE()
+{
+    QApplication::setStyle(new QCDEStyle);
 }
