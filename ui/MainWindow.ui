@@ -1188,7 +1188,7 @@
      <addaction name="actionMotif"/>
      <addaction name="actionCDE"/>
     </widget>
-    <addaction name="actionHideEditorBar"/>
+    <addaction name="actionEditorBar"/>
     <addaction name="menuChangeStyle"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
@@ -1196,12 +1196,15 @@
    <addaction name="menuOptions"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionHideEditorBar">
+  <action name="actionEditorBar">
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Hide &amp;Editor Bar</string>
+    <string>Show &amp;Editor Bar</string>
    </property>
   </action>
   <action name="actionQuit">

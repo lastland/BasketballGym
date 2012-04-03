@@ -45,6 +45,8 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     actionMac->setEnabled(true);
 #endif
 
+    connect(actionEditorBar, SIGNAL(toggled(bool)), tabWidget, SLOT(setVisible(bool)));
+    
     connect(actionPlastique, SIGNAL(triggered()), this, SLOT(stylePlastique()));
     connect(actionGtk, SIGNAL(triggered()), this, SLOT(styleGtk()));
     connect(actionCleanlooks, SIGNAL(triggered()), this, SLOT(styleCleanlooks()));
