@@ -1138,11 +1138,87 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <widget class="QMenu" name="menuChangeStyle">
+     <property name="title">
+      <string>Change &amp;Style</string>
+     </property>
+     <addaction name="actionPlastique"/>
+     <addaction name="actionGtk"/>
+     <addaction name="actionCleanlooks"/>
+     <addaction name="separator"/>
+     <addaction name="actionWindows"/>
+     <addaction name="separator"/>
+     <addaction name="actionMac"/>
+     <addaction name="separator"/>
+     <addaction name="actionMotif"/>
+     <addaction name="actionCDE"/>
+    </widget>
+    <addaction name="actionHideEditorBar"/>
+    <addaction name="menuChangeStyle"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuOptions"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionHideEditorBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Hide &amp;Editor Bar</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="actionPlastique">
+   <property name="text">
+    <string>Plastique</string>
+   </property>
+  </action>
+  <action name="actionGtk">
+   <property name="text">
+    <string>Gtk</string>
+   </property>
+  </action>
+  <action name="actionCleanlooks">
+   <property name="text">
+    <string>Cleanlooks</string>
+   </property>
+  </action>
+  <action name="actionWindows">
+   <property name="text">
+    <string>Windows</string>
+   </property>
+  </action>
+  <action name="actionMac">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Mac</string>
+   </property>
+  </action>
+  <action name="actionMotif">
+   <property name="text">
+    <string>Motif</string>
+   </property>
+  </action>
+  <action name="actionCDE">
+   <property name="text">
+    <string>CDE</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>

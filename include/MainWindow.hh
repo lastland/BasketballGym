@@ -13,6 +13,14 @@ public:
 
 public slots:
     void togglePlayButton(void);
+
+    void stylePlastique(void);
+    void styleGtk(void);
+    void styleCleanlooks(void);
+    void styleWindows(void);
+    void styleMac(void);
+    void styleMotif(void);
+    void styleCDE(void);
     
 private:
     SceneWidget *m_scene;

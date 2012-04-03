@@ -3,7 +3,7 @@
 
 using namespace std;
 
-#define SOUNDS_LOCATION "resources/sounds/"
+#define SOUNDS_LOCATION ":/"
 
 Sound::Sound()
     : QObject()

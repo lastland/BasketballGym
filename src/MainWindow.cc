@@ -1,4 +1,11 @@
-#include <stdio.h>
+#include <QtGui/QCDEStyle>
+#include <QtGui/QMotifStyle>
+#include <QtGui/QWindowsStyle>
+#include <QtGui/QMacStyle>
+#include <QtGui/QPlastiqueStyle>
+#include <QtGui/QGtkStyle>
+#include <QtGui/QCleanlooksStyle>
+#include <QtGui/QStyle>
 #include "sound.hh"
 #include "scene.hh"
 #include "MainWindow.hh"
@@ -10,6 +17,17 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     m_scene = scene;
     scenePartLayout->addWidget(m_scene, 0);
 
+    /* set background pictures. */
+    setObjectName("mainWindow");
+    setStyleSheet(
+        "#mainWindow{"
+        "background-image:url(:/background.jpg);"
+        "background-color:white;"
+        "background-position: bottom right;"
+        "background-repeat: none;"
+        "margin-right: 30px;"
+        "margin-bottom: 20px;}");
+
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), scene, SLOT(update()));
     timer->start(1000.0 / 60.0);
@@ -19,8 +37,21 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
             sound, SLOT(basketballSound(SoundLevel)));
 
     m_play = false;
+    playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
     connect(playButton, SIGNAL(clicked()), m_scene, SLOT(toggleState()));
     connect(playButton, SIGNAL(clicked()), this, SLOT(togglePlayButton()));
+
+#ifdef __APPLE__
+    actionMac->setEnabled(true);
+#endif
+
+    connect(actionPlastique, SIGNAL(triggered()), this, SLOT(stylePlastique()));
+    connect(actionGtk, SIGNAL(triggered()), this, SLOT(styleGtk()));
+    connect(actionCleanlooks, SIGNAL(triggered()), this, SLOT(styleCleanlooks()));
+    connect(actionWindows, SIGNAL(triggered()), this, SLOT(styleWindows()));
+    connect(actionMac, SIGNAL(triggered()), this, SLOT(styleMac()));
+    connect(actionMotif, SIGNAL(triggered()), this, SLOT(styleMotif()));
+    connect(actionCDE, SIGNAL(triggered()), this, SLOT(styleCDE()));
 
     QObject *double_buddies[] = {
         /* camera position */
@@ -113,11 +144,50 @@ void MainWindow::togglePlayButton()
     if (m_play)
     {
         m_play = false;
-        playButton->setText("Play");
+        playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+        playButton->setText(tr("Play"));
     }
     else
     {
         m_play = true;
-        playButton->setText("Pause");
+        playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+        playButton->setText(tr("Pause"));
     }
+}
+
+void MainWindow::stylePlastique()
+{
+    QApplication::setStyle(new QPlastiqueStyle);
+}
+
+void MainWindow::styleGtk()
+{
+    QApplication::setStyle(new QGtkStyle);
+}
+
+void MainWindow::styleCleanlooks()
+{
+    QApplication::setStyle(new QCleanlooksStyle);
+}
+
+void MainWindow::styleWindows()
+{
+    QApplication::setStyle(new QWindowsStyle);
+}
+
+void MainWindow::styleMac()
+{
+#ifdef __APPLE__
+    QApplication::setStyle(new QMacStyle);
+#endif
+}
+
+void MainWindow::styleMotif()
+{
+    QApplication::setStyle(new QMotifStyle);
+}
+
+void MainWindow::styleCDE()
+{
+    QApplication::setStyle(new QCDEStyle);
 }
