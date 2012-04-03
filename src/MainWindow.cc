@@ -55,6 +55,8 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     connect(actionMotif, SIGNAL(triggered()), this, SLOT(styleMotif()));
     connect(actionCDE, SIGNAL(triggered()), this, SLOT(styleCDE()));
 
+    connect(actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
+
     QPushButton *color_buttons[] = {
         ambientColorButton,
         diffuseColorButton,
