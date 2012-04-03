@@ -17,6 +17,8 @@ public slots:
     void stylePlastique(void);
     void styleGtk(void);
     void styleCleanlooks(void);
+    void styleWindowsVista(void);
+    void styleWindowsXP(void);
     void styleWindows(void);
     void styleMac(void);
     void styleMotif(void);

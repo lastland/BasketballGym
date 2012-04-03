@@ -1166,7 +1166,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptions">
@@ -1181,6 +1181,8 @@
      <addaction name="actionGtk"/>
      <addaction name="actionCleanlooks"/>
      <addaction name="separator"/>
+     <addaction name="actionWindowsVista"/>
+     <addaction name="actionWindowsXP"/>
      <addaction name="actionWindows"/>
      <addaction name="separator"/>
      <addaction name="actionMac"/>
@@ -1248,6 +1250,16 @@
   <action name="actionCDE">
    <property name="text">
     <string>CDE</string>
+   </property>
+  </action>
+  <action name="actionWindowsVista">
+   <property name="text">
+    <string>Windows Vista</string>
+   </property>
+  </action>
+  <action name="actionWindowsXP">
+   <property name="text">
+    <string>Windows XP</string>
    </property>
   </action>
  </widget>

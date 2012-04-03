@@ -1,5 +1,7 @@
 #include <QtGui/QCDEStyle>
 #include <QtGui/QMotifStyle>
+#include <QtGui/QWindowsVistaStyle>
+#include <QtGui/QWindowsXPStyle>
 #include <QtGui/QWindowsStyle>
 #include <QtGui/QMacStyle>
 #include <QtGui/QPlastiqueStyle>
@@ -41,8 +43,24 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     connect(playButton, SIGNAL(clicked()), m_scene, SLOT(toggleState()));
     connect(playButton, SIGNAL(clicked()), this, SLOT(togglePlayButton()));
 
+#ifdef __linux__
+    actionGtk->setEnabled(true);
+#else
+    actionGtk->setEnabled(false);
+#endif
+
 #ifdef __APPLE__
     actionMac->setEnabled(true);
+#else
+    actionMac->setEnabled(false);
+#endif
+
+#ifdef _WIN32
+    actionWindowsVista->setEnabled(true);
+    actionWindowsXP->setEnabled(true);
+#else
+    actionWindowsVista->setEnabled(false);
+    actionWindowsXP->setEnabled(false);
 #endif
 
     connect(actionEditorBar, SIGNAL(toggled(bool)), tabWidget, SLOT(setVisible(bool)));
@@ -51,6 +69,8 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     connect(actionGtk, SIGNAL(triggered()), this, SLOT(styleGtk()));
     connect(actionCleanlooks, SIGNAL(triggered()), this, SLOT(styleCleanlooks()));
     connect(actionWindows, SIGNAL(triggered()), this, SLOT(styleWindows()));
+    connect(actionWindowsVista, SIGNAL(triggered()), this, SLOT(styleWindowsVista()));
+    connect(actionWindowsXP, SIGNAL(triggered()), this, SLOT(styleWindowsXP()));
     connect(actionMac, SIGNAL(triggered()), this, SLOT(styleMac()));
     connect(actionMotif, SIGNAL(triggered()), this, SLOT(styleMotif()));
     connect(actionCDE, SIGNAL(triggered()), this, SLOT(styleCDE()));
@@ -188,12 +208,28 @@ void MainWindow::stylePlastique()
 
 void MainWindow::styleGtk()
 {
+#ifdef __linux__
     QApplication::setStyle(new QGtkStyle);
+#endif
 }
 
 void MainWindow::styleCleanlooks()
 {
     QApplication::setStyle(new QCleanlooksStyle);
+}
+
+void MainWindow::styleWindowsVista()
+{
+#ifdef _WIN32
+    QApplication::setStyle(new QWindowsVistaStyle);
+#endif
+}
+
+void MainWindow::styleWindowsXP()
+{
+#ifdef _WIN32
+    QApplication::setStyle(new QWindowsXPStyle);
+#endif
 }
 
 void MainWindow::styleWindows()
