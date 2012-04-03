@@ -53,6 +53,28 @@ MainWindow::MainWindow(SceneWidget *scene, QWidget *parent)
     connect(actionMotif, SIGNAL(triggered()), this, SLOT(styleMotif()));
     connect(actionCDE, SIGNAL(triggered()), this, SLOT(styleCDE()));
 
+    QPushButton *color_buttons[] = {
+        ambientColorButton,
+        diffuseColorButton,
+        ballColorButton,
+        floorColorButton,
+        NULL
+    };
+    QObject *colors[] = {
+        &m_scene->m_lightAmbient,
+        &m_scene->m_lightDiffuse,
+        &m_scene->m_ballAmbientAndDiffuse,
+        &m_scene->m_floorAmbientAndDiffuse,
+        NULL
+    };
+
+    for (int i = 0; color_buttons[i]; i++)
+    {
+        color_buttons[i]->setIcon(style()->standardIcon(
+                                      QStyle::SP_ToolBarHorizontalExtensionButton));
+        connect(color_buttons[i], SIGNAL(clicked()), colors[i], SLOT(getColor()));
+    }
+
     QObject *double_buddies[] = {
         /* camera position */
         cameraPosXBox, &m_scene->m_cameraPos.x,
